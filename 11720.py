@@ -1,7 +1,6 @@
 a = int(input())
+b = input()
 sum = 0
-for i in a:
-    temp = input()
-    print(type(temp))
-    sum = sum + int(temp)
+for i in b:
+    sum = sum + int(i)
 print(sum)
