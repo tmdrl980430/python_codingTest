@@ -7,7 +7,7 @@ for i in range(n):
     temp_arr = list(map(int, sys.stdin.readline().split()))
     arr.append(temp_arr)
 
-arr = sorted(arr,key=lambda x:x[1])
+arr = sorted(arr,key=lambda x:(x[1],x[0]))
 temp1 = 0
 answer = 0
 for i in range(n):
