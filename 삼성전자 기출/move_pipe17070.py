@@ -1,51 +1,30 @@
-import sys
-
 n = int(input())
+graph = [[] for _ in range(n)]
 
-matrix = []
+# 0은 가로, 1은 세로, 2는 대각선
+dp = [[[0] * n for _ in range(n)] for _ in range(3)]
 
-count = 0
-
+# 그래프 정보 입력
 for i in range(n):
-    temp_list = list(map(int, sys.stdin.readline().split()))
-    matrix.append(temp_list)
+    graph[i] = list(map(int, input().split()))
 
+dp[0][0][1] = 1  # 첫 시작 위치
 
-def operator(move, x, y):
+# dp를 위해서는 윗 행을 사용해야하므로 첫 행을 먼저 초기화
+for i in range(2, n):
+    if graph[0][i] == 0:
+        dp[0][0][i] = dp[0][0][i - 1]
 
-    if move == 'width': #가로
-        print('가로')
-        dfs(x + 1, y+1, 'diagonal')
-        dfs(x + 1, y, 'width')
-    elif move == 'height': #세로
-        print('세로')
-        dfs(x + 1, y+1, 'diagonal')
-        dfs(x, y + 1, 'height')
-    else: #대각선 (diagonal)
-        print('대각선')
-        dfs(x + 1, y+1, 'diagonal')
-        dfs(x, y + 1)
-        dfs(x + 1, y)
+for r in range(1, n):
+    for c in range(1, n):
+        # 현재위치가 대각선인 경우
+        if graph[r][c] == 0 and graph[r][c - 1] == 0 and graph[r - 1][c] == 0:
+            dp[2][r][c] = dp[0][r - 1][c - 1] + dp[1][r - 1][c - 1] + dp[2][r - 1][c - 1]
 
+        if graph[r][c] == 0:
+            # 현재 위치가 가로인 경우
+            dp[0][r][c] = dp[0][r][c - 1] + dp[2][r][c - 1]
+            # 현재 위치가 세로인 경우
+            dp[1][r][c] = dp[1][r - 1][c] + dp[2][r - 1][c]
 
-def dfs(x,y, direction):
-    global count
-    
-    if x < 0 or y < 0 or x >= n or y >= n:
-        return
-    if matrix[x][y] == 1 or x < 0 or y < 0 or x >= n or y >= n:
-        return
-    elif x == n and y == n:
-        return count
-    else:
-        if direction == 'width':
-            operator('width', x, y)
-            count += 1 
-        elif direction == 'height':
-            operator('height', x, y)
-            count += 1
-        else:
-            operator('diagonal', x, y)
-            count += 1
-
-print(dfs(0,1, 'width'))
+print(sum(dp[i][n - 1][n - 1] for i in range(3)))
