@@ -17,29 +17,18 @@ sort_list = list(permutations(sort_list, 9))
 out_cnt = 0
         
 score = 0
-score_list = []
-score_list2 = []
+score_list = [0]
 
 def game(order):
-    global score , out_cnt, game_score, score_list, score_list2
+    global score , out_cnt, game_score, score_list
     best_player_cnt = 0
-    play_list = []
-    play_count = []
-    score_list2 = []
-    game_status = []
     base = deque()
     for i in range(3):
         base.append(0)
     ening = 0
     while ening < n:
 
-        if best_player_cnt == 3 and order[best_player_cnt] != 0:
-            print("틀림")
-        play_count.append(best_player_cnt)
-        play_list.append(order[best_player_cnt])
-        game_status.append(game_score[ening][order[best_player_cnt]])
         if game_score[ening][order[best_player_cnt]] == 0:
-            score_list2.append(score)
             out_cnt += 1
             if out_cnt == 3:
                 out_cnt = 0
@@ -60,13 +49,12 @@ def game(order):
                     base.appendleft(1)
                 else:
                     base.appendleft(0)
-        score_list2.append(score)
 
         best_player_cnt += 1
         if best_player_cnt == 9:
             best_player_cnt = 0
-    
-    score_list.append(score)
+    if max(score_list) < score:
+        score_list.append(score)
 
 
 
