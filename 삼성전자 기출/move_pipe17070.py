@@ -14,38 +14,36 @@ for i in range(n):
 def operator(move, x, y):
 
     if move == 'width': #가로
-        print('가로')
         dfs(x + 1, y+1, 'diagonal')
         dfs(x + 1, y, 'width')
     elif move == 'height': #세로
-        print('세로')
         dfs(x + 1, y+1, 'diagonal')
         dfs(x, y + 1, 'height')
     else: #대각선 (diagonal)
-        print('대각선')
         dfs(x + 1, y+1, 'diagonal')
-        dfs(x, y + 1)
-        dfs(x + 1, y)
+        dfs(x, y + 1, 'height')
+        dfs(x + 1, y, 'width')
 
 
 def dfs(x,y, direction):
+    
     global count
     
-    if x < 0 or y < 0 or x >= n or y >= n:
+    if x < 0 or y < 0 or x >= n - 1 or y >= n - 1:
         return
-    if matrix[x][y] == 1 or x < 0 or y < 0 or x >= n or y >= n:
+    if matrix[x][y] == 1:
+        count -= 1
         return
-    elif x == n and y == n:
-        return count
+    elif x == n - 1  and y == n - 1:
+        count += 1
+        return
     else:
         if direction == 'width':
             operator('width', x, y)
-            count += 1 
         elif direction == 'height':
             operator('height', x, y)
-            count += 1
         else:
             operator('diagonal', x, y)
-            count += 1
 
-print(dfs(0,1, 'width'))
+dfs(0,1, 'width')
+print(count)
