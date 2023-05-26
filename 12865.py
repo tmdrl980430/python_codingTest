@@ -1,43 +1,19 @@
-import sys
-from collections import deque
-from itertools import combinations
-
-
 n, k = map(int, input().split())
 
-bags = []
-
+thing = [[0,0]]
+d = [[0]*(k+1) for _ in range(n+1)]
 
 for i in range(n):
-    #입력
-    w, v = map(int, input().split())
-    bags.append((w,v))
+    thing.append(list(map(int, input().split())))
 
-bags2 = []
+for i in range(1, n+1):
+    for j in range(1, k+1):
+        w = thing[i][0]
+        v = thing[i][1]
 
-max_count = 0
-for j in range(1,n+1):
-    bags2= combinations(bags,j)
-
-    for i in bags2:
-        sum = 0
-        #가지고 있는 거의 무게
-        have_weights = 0
-        have_value = 0
-        for z in range(len(i)):
-            have_weights += i[z][0]
-            have_value += i[z][1]
-            if have_weights > k:
-                sum = 0
-                break
-            
-        if have_weights <= k:
-            sum = have_value
+        if j < w:
+            d[i][j] = d[i-1][j]
         else:
-            sum = 0
-        
-        if sum >= max_count:
-            max_count = sum
+            d[i][j] = max(d[i-1][j], d[i-1][j-w]+v)
 
-print(max_count)
-
+print(d[n][k])
