@@ -1,16 +1,22 @@
 import sys
-import heqpq
+import heapq
+input = sys.stdin.readline
 
+n = int(input())
+max_h, min_h = [], []
 
-n = int(sys.stdin.readline())
-
-
-numbers = []
 for i in range(n):
-    numbers.append(int(sys.stdin.readline()))
-    numbers.sort()
-    if len(numbers) % 2 == 1:
-        #홀수일 때
-        print(numbers[len(numbers)//2])
+    num = int(input())
+    if len(max_h) == len(min_h):
+        heapq.heappush(max_h, -num)
     else:
-        print(numbers[len(numbers)//2-1])
+        heapq.heappush(min_h, num)
+
+    if len(max_h) >= 1 and len(min_h) >= 1 and max_h[0] * -1 > min_h[0]:
+        max_value = heapq.heappop(max_h) * -1
+        min_value = heapq.heappop(min_h)
+        
+        heapq.heappush(max_h, min_value * -1)
+        heapq.heappush(min_h, max_value)
+
+    print(max_h[0] * -1)
