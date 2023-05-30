@@ -53,6 +53,10 @@ def bfs(a ,b , c, d):
                 while True:
                     nrx += dx[i]
                     nry += dy[i]
+                    if nrx < 0 or nry < 0 or nrx >= n or nry >= m:
+                        nrx -= dx[i]
+                        nry -= dy[i]
+                        break
                     if matrix[nrx][nry] == "#":
                         nrx -= dx[i]
                         nry -= dy[i]
@@ -61,15 +65,21 @@ def bfs(a ,b , c, d):
                         break
                 nbx, nby = bx, by
                 while True:
-                    nrx += dx[i]
-                    nry += dy[i]
+                    nbx += dx[i]
+                    nby += dy[i]
+                    if nbx < 0 or nby < 0 or nbx >= n or nby >= m:
+                        nbx -= dx[i]
+                        nby -= dy[i]
+                        break
                     if matrix[nbx][nby] == "#":
                         nrx -= dx[i]
                         nry -= dy[i]
                         break
                     if matrix[nbx][nby] == 'O':
                         break
-                if matrix[nbx][nby] == 'O':
+                if nbx < 0 or nby < 0 or nbx >= n or nby >= m or nrx < 0 or nry < 0 or nrx >= n or nry >= m:
+                    continue
+                elif matrix[nbx][nby] == 'O':
                     continue
                 if nrx == nbx and nry == nby:
                     if abs(nrx - rx) + abs(nry - ry) > abs(nbx - bx) + abs(nby - by):
