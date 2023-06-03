@@ -15,7 +15,7 @@ matrix = [[0] * n for _ in range(n)]
 # 사과의 위치 추가
 for i in range(apple_count):
     x, y = map(int, sys.stdin.readline().split())
-    matrix[x][y] = 2
+    matrix[x- 1][y-1] = 2
 
 matrix[0][0] = 1 #뱀의 위치 추가
 L = int(sys.stdin.readline())
