@@ -107,3 +107,4 @@ while True:
     if x == n and y == n:
         print(answer)
         break
+# 왜 틀린거지..?  테케는 맞음   
