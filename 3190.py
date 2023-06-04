@@ -50,14 +50,18 @@ def rotate(direction , current_direction_index):
         else:
             current_direction -= 1
 
+q = deque()
+q.append((1,1))
+
 def move(head_x, head_y):
     # 현재 머리와 꼬리의 위치, 방향을 입력받고 한칸 이동
-    global current_direction
+    global current_direction, q
     head_x += dx[current_direction]
     head_y += dy[current_direction]
     if head_x > n or head_y > n or head_x == 0 or head_y == 0:
         #벽에 부딪히면 게임끝
         return (n, n)
+    q.appendleft((head_x, head_y))
     if matrix[head_x][head_y] == 2: #사과가 있으면 길이가 늘어남
         matrix[head_x][head_y] = 1
         # 꼬리가 그대로여야 함
@@ -66,30 +70,32 @@ def move(head_x, head_y):
     elif matrix[head_x][head_y] == 0:
         #꼬리가 사라져야 함
         matrix[head_x][head_y] = 1
-        tail_x, tail_y = find_tali(head_x, head_y)
+        tail_x, tail_y = q.pop()
         matrix[tail_x][tail_y] = 0
     return (head_x, head_y)
 
-def find_tali(x , y): # 머리의 위치를 인자로 받고 bfs 탐색으로 꼬리의 위치를 찾아냄
-    queue = deque()
-    queue.append((x,y))
-    visited = [[False] * (n+1) for _ in range(n+1)]
-    visited[x][y] = True
-    tail_x = x
-    tail_y = y
-    while queue:
-        x, y = queue.popleft()
-        for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
-            if ny == 0 or nx == 0 or ny > n or nx > n:
-                continue
-            if matrix[nx][ny] == 1 and visited[nx][ny] == False:
-                queue.append((nx, ny))
-                visited[nx][ny] = True
-                tail_x = nx
-                tail_y = ny
-    
+def find_tali(): # 머리의 위치를 인자로 받고 bfs 탐색으로 꼬리의 위치를 찾아냄
+    # queue = deque()
+    # queue.append((x,y))
+    # visited = [[False] * (n+1) for _ in range(n+1)]
+    # visited[x][y] = True
+    # tail_x = x
+    # tail_y = y
+    # while queue:
+    #     x, y = queue.popleft()
+    #     for i in range(4):
+    #         nx = x + dx[i]
+    #         ny = y + dy[i]
+    #         if ny == 0 or nx == 0 or ny > n or nx > n:
+    #             continue
+    #         if matrix[nx][ny] == 1 and visited[nx][ny] == False:
+    #             queue.append((nx, ny))
+    #             visited[nx][ny] = True
+    #             tail_x = nx
+    #             tail_y = ny
+    global q
+    tail_x, tail_y = q.pop()
+    q.append(tail_x)    
     return (tail_x, tail_y)
 answer = 0
 rotate_count = 0
