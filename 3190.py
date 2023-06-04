@@ -6,26 +6,26 @@ from collections import deque
 
 # N * N  정사각형의 맵
 
-n = int(sys.stdin.readline())
-apple_count = int(sys.stdin.readline())
+n = int(input())
+apple_count = int(input())
 
 # 뱀이 있는 곳은 1, 사과가 있는 곳은 2, 아무것도 없는 곳은 0으로 설정한다.
-matrix = [[0] * n for _ in range(n)]
+matrix = [[0] * (n+1) for _ in range(n+1)]
 
 # 사과의 위치 추가
 for i in range(apple_count):
-    x, y = map(int, sys.stdin.readline().split())
-    matrix[x- 1][y-1] = 2
+    x, y = map(int, input().split())
+    matrix[x][y] = 2
 
-matrix[0][0] = 1 #뱀의 위치 추가
-L = int(sys.stdin.readline())
+matrix[1][1] = 1 #뱀의 위치 추가
+L = int(input())
 
 move_count = [] # 방향전환 횟수 배열
 move_directions = [] #회전 방향 배열
 
 #방향 관련 정보 입력
 for i in range(L):
-    c, direction = map(str, sys.stdin.readline().split())
+    c, direction = map(str, input().split())
     move_count.append(int(c))
     move_directions.append(direction)
 
@@ -55,7 +55,7 @@ def move(head_x, head_y):
     global current_direction
     head_x += dx[current_direction]
     head_y += dy[current_direction]
-    if head_x >= n or head_y >= n or head_x < 0 or head_y < 0:
+    if head_x > n or head_y > n or head_x == 0 or head_y == 0:
         #벽에 부딪히면 게임끝
         return (n, n)
     if matrix[head_x][head_y] == 2: #사과가 있으면 길이가 늘어남
@@ -73,7 +73,7 @@ def move(head_x, head_y):
 def find_tali(x , y): # 머리의 위치를 인자로 받고 bfs 탐색으로 꼬리의 위치를 찾아냄
     queue = deque()
     queue.append((x,y))
-    visited = [[False] * n for _ in range(n)]
+    visited = [[False] * (n+1) for _ in range(n+1)]
     visited[x][y] = True
     tail_x = x
     tail_y = y
@@ -82,7 +82,7 @@ def find_tali(x , y): # 머리의 위치를 인자로 받고 bfs 탐색으로 �
         for i in range(4):
             nx = x + dx[i]
             ny = y + dy[i]
-            if ny < 0 or nx < 0 or ny >= n or nx >= n:
+            if ny == 0 or nx == 0 or ny > n or nx > n:
                 continue
             if matrix[nx][ny] == 1 and visited[nx][ny] == False:
                 queue.append((nx, ny))
@@ -90,12 +90,12 @@ def find_tali(x , y): # 머리의 위치를 인자로 받고 bfs 탐색으로 �
                 tail_x = nx
                 tail_y = ny
     
-    return [tail_x, tail_y]
+    return (tail_x, tail_y)
 answer = 0
 rotate_count = 0
 
-x = 0
-y = 0
+x = 1
+y = 1
 while True:
     x, y = move(x, y)
     answer += 1
