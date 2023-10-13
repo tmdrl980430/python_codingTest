@@ -13,7 +13,31 @@ def bfs(x, y):
     
     queue = deque()
     queue.append((x, y))
-    visited[x][y] = True
+    visited[x][y] = True1 1
+0
+2 2
+0 1
+1 0
+3 2
+1 1 1
+1 1 1
+5 4
+1 0 1 0 0
+1 0 0 0 0
+1 0 1 0 1
+1 0 0 1 0
+5 4
+1 1 1 0 1
+1 0 1 0 1
+1 0 1 0 1
+1 0 1 1 1
+5 5
+1 0 1 0 1
+0 0 0 0 0
+1 0 1 0 1
+0 0 0 0 0
+1 0 1 0 1
+0 0
     while queue:
         x , y = queue.popleft()
         
